@@ -1,86 +1,174 @@
-// import Image from "next/image";
-
-import { Card, Navbar } from "@/components";
+"use client";
+import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const Home = () => {
+  const [inputValue, setInputValue] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [filterStatus, setFIlterStatus] = useState("all");
+
+  const handleFilterStatus = (status) => {
+    setFIlterStatus(status);
+  };
+
+  const handleOnChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleAddTodo = () => {
+    setTodos([...todos, { title: inputValue, isDone: false, id: uuidv4() }]); // object array bolgoh heregtei uchraas {} dotor bichsen
+    setInputValue("");
+  };
+
+  const handleOnChangeCheckbox = (event, id) => {
+    //id aar baridag bolson uchraas index bish id hereglene
+    const newTodos = todos.map((todo) => {
+      if (id === todo.id) todo.isDone = event.target.checked;
+      return todo;
+    });
+    setTodos(newTodos);
+  };
+
+  const handleDeleteTodo = (index) => {
+    const newTodos = todos.filter((el, i) => index !== i);
+    setTodos(newTodos);
+  };
+
+  const handleClearCompleted = () => {
+    const newTodos = todos.filter((todo, i) => {
+      return !todo.isDone;
+    });
+    setTodos(newTodos);
+  };
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filterStatus === "all") return true;
+    if (filterStatus === "active") return !todo.isDone;
+    return todo.isDone;
+  });
+
+  const isButtonDisabled = inputValue === ""; // <========== disable button
+
   return (
-    <div className="w-full h-screen">
-      <Navbar></Navbar>
-      <hero>
-        <div className="w-full h-[180px] p-10 text-center bg-gray-50">
-          <h3 className="font-bold text-3xl mb-5">Welcome to Simple Blog</h3>
-          <p className="">
-            Discover insightful articles about web development, programming, and
-            technology. Clean design meets quality content.
-          </p>
-        </div>
-      </hero>
-      <section>
-        <h3 className="text-center font-semibold text-1xl mt-10">
-          Latest Posts
+    <div className="w-full h-screen bg-gray-100 pt-[60px] flex justify-center box-border">
+      <div className="w-[377px] h-fit bg-white rounded-[16px] drop-shadow-[0_0_12px_rgba(0,0,0,0.16)] py-6 px-2 box-border inter">
+        <h3 className="text-[20px] font-semibold flex justify-center mb-5 ">
+          To-Do list
         </h3>
-        <div className="flex gap-10 p-10 flex-wrap justify-center">
-          <Card
-            img="https://miro.medium.com/1*V-Jp13LvtVc2IiY2fp4qYw.jpeg"
-            p="January 15, 2025"
-            h3="Getting Started with Modern Web Development"
-            span="Learn the fundamentals of modern web development including React,
-        Next.js, and TypeScript. This comprehensive guide will help you build
-        your first..."
-          ></Card>
-          <Card
-            img="https://blog.zegocloud.com/wp-content/uploads/2024/03/types-of-web-development-services.jpg"
-            p="January 12, 2025"
-            h3="The Art of Clean Code"
-            span="Discover best practices for writing maintainable, readable code that your future self and teammates will thank you for.
-Clean code is not just about syntax."
-          ></Card>
-          <Card
-            img="https://xultechng.com/home/image/solutions/web-development.jpg"
-            p="January 10, 2025"
-            h3="Building Responsive Designs"
-            span="Master the techniques for creating websites that look great on all devices. From mobile-first design to advanced CSS
-Grid layouts."
-          ></Card>
-          <Card
-            img="https://images.prismic.io//intuzwebsite/4b74ec65-7ee2-4134-a612-6d96a6bd9278_Web+Development.png?w=1200&q=75&auto=format,compress&fm=png8"
-            p="January 15, 2025"
-            h3="Getting Started with Modern Web Development"
-            span="Learn the fundamentals of modern web development including React,
-        Next.js, and TypeScript. This comprehensive guide will help you build
-        your first..."
-          ></Card>
-          <Card
-            img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe2GwSnBHMJToBd-eLWfuybICaj0AA5_Jcig&s"
-            p="January 12, 2025"
-            h3="The Art of Clean Code"
-            span="Discover best practices for writing maintainable, readable code that your future self and teammates will thank you for.
-Clean code is not just about syntax."
-          ></Card>
-          <Card
-            img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV--5QlI17JIxa8XsbkwO0_-UJ-gZjYbO9bA&s"
-            p="January 10, 2025"
-            h3="Building Responsive Designs"
-            span="Master the techniques for creating websites that look great on all devices. From mobile-first design to advanced CSS
-Grid layouts."
-          ></Card>
-          <Card
-            img="https://xultechng.com/home/image/solutions/web-development.jpg"
-            p="January 10, 2025"
-            h3="Building Responsive Designs"
-            span="Master the techniques for creating websites that look great on all devices. From mobile-first design to advanced CSS
-Grid layouts."
-          ></Card>
-          <Card
-            img="https://images.prismic.io//intuzwebsite/4b74ec65-7ee2-4134-a612-6d96a6bd9278_Web+Development.png?w=1200&q=75&auto=format,compress&fm=png8"
-            p="January 15, 2025"
-            h3="Getting Started with Modern Web Development"
-            span="Learn the fundamentals of modern web development including React,
-        Next.js, and TypeScript. This comprehensive guide will help you build
-        your first..."
-          ></Card>
+
+        <div className="flex gap-[6px] flex-col px-2">
+          <div className="flex gap-[6px] ">
+            <input
+              value={inputValue}
+              onChange={handleOnChange}
+              type="text"
+              className="w-70 h-10 border-[1px] rounded-[6px] py-2 px-4 border-[#E4E4E7] ml-4 "
+              placeholder="Add a new task..."
+            ></input>
+            <button
+              disabled={isButtonDisabled} // <========== disable button
+              onClick={handleAddTodo}
+              className="bg-[#3C82F6] py-2 px-4 rounded-[6px] text-white mr-4 cursor-pointer"
+            >
+              Add
+            </button>
+          </div>
+          <div className="mt-[19px] ">
+            <div className="flex gap-[6px]">
+              <button
+                onClick={() => handleFilterStatus("all")}
+                className={
+                  "py-1 px-3 ml-4 bg-[#F3F4F6]  rounded-[6px]  text-[#363636] " +
+                  `${
+                    filterStatus === "all"
+                      ? "!bg-[#3C82F6] !text-white !cursor-pointer"
+                      : ""
+                  }`
+                }
+              >
+                All
+              </button>
+              <button
+                onClick={() => handleFilterStatus("active")}
+                className={
+                  "py-1 px-3 bg-[#F3F4F6]  rounded-[6px]  text-[#363636] " +
+                  `${
+                    filterStatus === "active"
+                      ? "!bg-[#3C82F6] !text-white !cursor-pointer"
+                      : ""
+                  }`
+                }
+              >
+                Active
+              </button>
+              <button
+                onClick={() => handleFilterStatus("completed")}
+                className={
+                  "py-1 px-3 bg-[#F3F4F6]  rounded-[6px]  text-[#363636] " +
+                  `${
+                    filterStatus === "completed"
+                      ? "!bg-[#3C82F6] !text-white !cursor-pointer"
+                      : ""
+                  }`
+                }
+              >
+                Completed
+              </button>
+            </div>
+          </div>
+
+          {filteredTodos.map((todo, index) => (
+            <div
+              key={todo.id}
+              className="bg-[#F9FAFB] rounded-md p-4 w-[333px] h-[62px] mt-5 mx-4 box-border flex items-center relative"
+            >
+              <div className="flex gap-[10px] items-center text-[14px]">
+                <input
+                  onChange={(event) => handleOnChangeCheckbox(event, todo.id)}
+                  type="checkbox"
+                  className="w-5 h-5"
+                  defaultChecked={todo.isDone}
+                />
+                {todo.title}{" "}
+                <button
+                  onClick={() => handleDeleteTodo(index)}
+                  className="bg-[#FEF2F2] py-[6px] px-3 rounded-[6px] text-[#EF4444] text-[14px] mr-4 absolute right-1 cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+          {todos.length == 0 ? (
+            <p className="mt-[32px] text-[14px] text-[#6B7280] flex justify-center">
+              No tasks yet. Add one above!
+            </p>
+          ) : (
+            <>
+              <div className="mt-5 mb-4 w-[333px] h-[1px] mx-4 border[1px] bg-[#E4E4E7]"></div>
+              <div className="flex justify-between mr-4 items-center">
+                <div className="text-[#6B7280] text-[14px] mx-4">
+                  {todos.filter((todo) => todo.isDone === true).length} of{" "}
+                  {todos.length} tasks completed
+                </div>
+                <button
+                  onClick={handleClearCompleted}
+                  className="text-[#EF4444] text-[14px] cursor-pointer"
+                >
+                  Clear completed
+                </button>
+              </div>
+            </>
+          )}
+
+          <span className="flex gap-1 text-3 text-[#6B7280] mt-10 mb-[24px] justify-center">
+            Powered by{" "}
+            <a href="#Pinecone" className="text-[#3B73ED]">
+              Pinecone academy
+            </a>
+          </span>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
