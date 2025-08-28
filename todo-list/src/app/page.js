@@ -126,7 +126,7 @@ const Home = () => {
           {filteredTodos.map((todo, index) => (
             <div
               key={todo.id}
-              className="bg-[#F9FAFB] rounded-md p-4 w-[333px] h-[62px] mt-5 mx-4 box-border flex items-center relative"
+              className="bg-[#F9FAFB] rounded-md p-4 w-[333px] h-[62px] mt-5 mx-4 box-border flex items-center relative hover:bg-[#F3F4F6] hover:duration-[0.3s]"
             >
               <div className="flex gap-[10px] items-center text-[14px]">
                 <input
