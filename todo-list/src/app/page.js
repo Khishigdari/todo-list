@@ -26,6 +26,7 @@ const Home = () => {
       if (id === todo.id) todo.isDone = event.target.checked;
       return todo;
     });
+
     setTodos(newTodos);
   };
 
@@ -65,13 +66,18 @@ const Home = () => {
               className="w-70 h-10 border-[1px] rounded-[6px] py-2 px-4 border-[#E4E4E7] ml-4 "
               placeholder="Add a new task..."
             ></input>
-            <button
-              disabled={isButtonDisabled} // <========== disable button
-              onClick={handleAddTodo}
-              className="bg-[#3C82F6] py-2 px-4 rounded-[6px] text-white mr-4 cursor-pointer"
-            >
-              Add
-            </button>
+            {isButtonDisabled ? (
+              <button className="bg-[#F3F4F6] py-2 px-4 rounded-[6px] text-[#363636] mr-4 cursor-pointer">
+                Add
+              </button>
+            ) : (
+              <button
+                onClick={handleAddTodo}
+                className="bg-[#3C82F6] py-2 px-4 rounded-[6px] text-white mr-4 cursor-pointer"
+              >
+                Add
+              </button>
+            )}
           </div>
           <div className="mt-[19px] ">
             <div className="flex gap-[6px]">
@@ -129,13 +135,19 @@ const Home = () => {
                   className="w-5 h-5"
                   defaultChecked={todo.isDone}
                 />
-                {todo.title}{" "}
-                <button
-                  onClick={() => handleDeleteTodo(index)}
-                  className="bg-[#FEF2F2] py-[6px] px-3 rounded-[6px] text-[#EF4444] text-[14px] mr-4 absolute right-1 cursor-pointer"
-                >
-                  Delete
-                </button>
+                <p className={todo.isDone ? "line-through" : ""}>
+                  {todo.title}{" "}
+                </p>
+                {todo.isDone ? (
+                  <button
+                    onClick={() => handleDeleteTodo(index)}
+                    className="bg-[#FEF2F2] py-[6px] px-3 rounded-[6px] text-[#EF4444] text-[14px] mr-4 absolute right-1 cursor-pointer"
+                  >
+                    Delete
+                  </button>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           ))}
