@@ -63,7 +63,7 @@ const Home = () => {
               value={inputValue}
               onChange={handleOnChange}
               type="text"
-              className="w-70 h-10 border-[1px] rounded-[6px] py-2 px-4 border-[#E4E4E7] ml-4 "
+              className="w-70 h-10 border-[1px] rounded-[6px] py-2 px-4 border-[#E4E4E7] ml-4 " //focus:outline-none focus:ring-2 focus:ring-[#2463EB]
               placeholder="Add a new task..."
             ></input>
             {isButtonDisabled ? (
