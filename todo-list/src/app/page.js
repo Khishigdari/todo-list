@@ -70,7 +70,7 @@ const Home = () => {
               onChange={handleOnChange}
               onKeyDown={handleClickEnter}
               type="text"
-              className="w-70 h-10 border-[1px] rounded-[6px] py-2 px-4 border-[#E4E4E7] ml-4 " //focus:outline-none focus:ring-2 focus:ring-[#2463EB]
+              className="w-70 h-10 border-[1px] rounded-[6px] py-2 px-4 border-[#E4E4E7] ml-4 focus:outline-none focus:ring-2 focus:ring-[#2463EB]" //focus:outline-none focus:ring-2 focus:ring-[#2463EB]
               placeholder="Add a new task..."
             ></input>
             {isButtonDisabled ? (
@@ -139,7 +139,8 @@ const Home = () => {
                 <input
                   onChange={(event) => handleOnChangeCheckbox(event, todo.id)}
                   type="checkbox"
-                  className="w-5 h-5"
+                  className="w-5 h-5 accent-[#0275FF]"
+                  //  border-[1px] border-white shadow-[0_0_0_2px_rgba(1, 95, 204, 1)]
                   defaultChecked={todo.isDone}
                 />
                 <p className={todo.isDone ? "line-through" : ""}>
